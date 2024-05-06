@@ -13,7 +13,6 @@ public class bgLoop : MonoBehaviour
         material = GetComponent<Renderer>().material;
         offset = material.GetTextureOffset("_MainTex");
     }
-
     void Update()
     {
         offset.x += speed * Time.deltaTime;
