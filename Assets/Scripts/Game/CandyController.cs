@@ -6,6 +6,7 @@ public class CandyController : MonoBehaviour
 {
     public int frame;
     public int lifeChanges;
+    
 
     void Update()
     {
@@ -14,4 +15,5 @@ public class CandyController : MonoBehaviour
             CandyGenerator.instance.ManageCandy(this);
         }
     }
+    
 }

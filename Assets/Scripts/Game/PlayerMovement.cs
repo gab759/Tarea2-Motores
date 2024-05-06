@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed;
     private float limitSuperior;
     private float limitInferior;
+    private int score = 0; // Puntaje inicial
+    public TextMeshProUGUI scoreText; // Referencia al componente de texto para mostrar el puntaje
     public int player_lives = 4;
     // Start is called before the first frame update
     void Start()
@@ -25,6 +28,13 @@ public class PlayerMovement : MonoBehaviour
         Vector2 movementPlayer = contex.ReadValue<Vector2>();
         myRB.velocity = movementPlayer * speed;
     }
+
+    void IncrementarPuntaje(int cantidad)
+    {
+        score += cantidad;
+        scoreText.text = score.ToString("F0"); 
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -58,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
         if (other.tag == "Candy")
         {
             CandyGenerator.instance.ManageCandy(other.gameObject.GetComponent<CandyController>(), this);
+            IncrementarPuntaje(10);
         }
     }
 }

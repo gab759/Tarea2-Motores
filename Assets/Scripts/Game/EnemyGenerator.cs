@@ -1,15 +1,15 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CandyGenerator : MonoBehaviour
+public class EnemyGenerator : MonoBehaviour
 {
-    public static CandyGenerator instance;
+    public static EnemyGenerator instance;
     public List<GameObject> Candies = new List<GameObject>();
     private float time_to_create = 4f;
     private float actual_time = 0f;
-    [SerializeField] private AudioSource eatSfx;
+    [SerializeField] private AudioSource hitSfx;
     [SerializeField] SoundConfig sfx;
     private float limitSuperior;
     private float limitInferior;
@@ -42,6 +42,7 @@ public class CandyGenerator : MonoBehaviour
             actual_candies.Add(candy);
         }
     }
+
     void SetMinMax()
     {
         Vector3 bounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
@@ -51,21 +52,27 @@ public class CandyGenerator : MonoBehaviour
 
     public void ManageCandy(CandyController candy_script, PlayerMovement player_script = null)
     {
-        if (player_script != null) 
+        if (player_script == null)
         {
-            int lives = player_script.player_lives;
-            int live_changer = candy_script.lifeChanges;
-            lives += live_changer;
-            print(lives);
-            if (lives <= 0)
-            {
-                SceneManager.LoadScene("GameOver");
-            }
-            player_script.player_lives = lives;
-            eatSfx.clip = sfx.SoundClip;
-            eatSfx.Play();
-        } 
-        Destroy(candy_script.gameObject); 
+            Destroy(candy_script.gameObject);
+            return;
+        }
+        /*if (candy_script.frame == 3)
+        {
+            SceneManager.LoadScene("GameOver");
+            return;
+        }*/
+        int lives = player_script.player_lives;
+        int live_changer = candy_script.lifeChanges;
+        lives += live_changer;
+        print(lives);
+        if (lives <= 0)
+        {
+            SceneManager.LoadScene("GameOver");
+        }
+        player_script.player_lives = lives;
+        eatSfx.clip = sfx.SoundClip;
+        eatSfx.Play();
+        Destroy(candy_script.gameObject);
     }
-    
 }
